@@ -4,12 +4,9 @@ import * as Yup from "yup";
 
 const { handleSubmit } = useForm({
   validationSchema: Yup.object({
-    username: Yup.string().required("Please enter a username").uppercase(),
-    email: Yup.string().required("Email field is required").email(),
-    password: Yup.string()
-      .required("Password field is required")
-      .min(8)
-      .max(20),
+    username: Yup.string().required().uppercase(),
+    email: Yup.string().required().email(),
+    password: Yup.string().required().min(8).max(20),
   }),
 });
 
@@ -31,9 +28,17 @@ const onSubmit = handleSubmit(({ username, email, password }) => {
       2
     )
   );
-
   // console.log(JSON.stringify(values, null, 2));
 });
+
+const capitalize = (name: string | undefined) => {
+  if (name !== undefined) {
+    const firstCharacter = name[0].toUpperCase();
+    const rest = name.slice(1);
+
+    return firstCharacter + rest;
+  }
+};
 </script>
 
 <template>
@@ -56,9 +61,9 @@ const onSubmit = handleSubmit(({ username, email, password }) => {
           v-model="username"
         />
         <span
-          class="inline-block"
+          class="inline-block text-red-800"
           v-show="usernameError"
-          >{{ usernameError }}</span
+          >{{ capitalize(usernameError) }}</span
         >
       </div>
       <div class="space-y-1">
@@ -72,9 +77,9 @@ const onSubmit = handleSubmit(({ username, email, password }) => {
           v-model="email"
         />
         <span
-          class="inline-block"
+          class="inline-block text-red-800"
           v-show="emailError"
-          >{{ emailError }}</span
+          >{{ capitalize(emailError) }}</span
         >
       </div>
       <div class="space-y-1">
@@ -88,9 +93,9 @@ const onSubmit = handleSubmit(({ username, email, password }) => {
           :class="{ 'outline outline-2 outline-red-500': passwordError }"
         />
         <span
-          class="inline-block"
+          class="inline-block text-red-800"
           v-show="passwordError"
-          >{{ passwordError }}</span
+          >{{ capitalize(passwordError) }}</span
         >
       </div>
       <button
